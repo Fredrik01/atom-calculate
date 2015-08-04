@@ -28,19 +28,21 @@ module.exports = Calculate =
   serialize: ->
     calculateViewState: @calculateView.serialize()
 
+  # Get text from all selections
   getSelectedText: ->
     if @editor = atom.workspace.getActiveTextEditor()
-      @editor.getSelectedText()
+      selection.getText() for selection in @editor.getSelections()
     else
       false
 
   sum: ->
-    if text = @getSelectedText()
-      lines = text?.split('\n') || 0
+    if selections = @getSelectedText()
       sum = 0
-      for line in lines
-        if figure = parseFloat line
-          sum += figure
-      @editor.insertText text + '\nSum: ' + sum
+      for selection in selections
+        lines = selection?.split('\n') || 0
+        for line in lines
+          if figure = parseFloat line
+            sum += figure
+      atom.clipboard.write sum.toString()
     else
       console.log 'No text selected'
