@@ -1,7 +1,7 @@
 {
   "name": "calculate",
   "main": "./lib/calculate",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Summarizes all selected figures or selected rows and writes the result to the clipboard.",
   "keywords": [
     "calculate",
