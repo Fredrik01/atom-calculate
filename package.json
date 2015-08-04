@@ -1,0 +1,22 @@
+{
+  "name": "calculate",
+  "main": "./lib/calculate",
+  "version": "0.0.0",
+  "description": "Summarize selected rows",
+  "keywords": [
+    "calculate",
+    "sum",
+    "summarize",
+    "summarize rows"
+  ],
+  "activationCommands": {
+    "atom-workspace": "calculate:sum"
+  },
+  "repository": "https://github.com/Fredrik01/atom-calculate",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+  }
+}

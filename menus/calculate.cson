@@ -1,0 +1,21 @@
+'context-menu':
+  'atom-text-editor': [
+    {
+      'label': 'Calculate sum'
+      'command': 'calculate:sum'
+    }
+  ]
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'calculate'
+      'submenu': [
+        {
+          'label': 'Sum'
+          'command': 'calculate:sum'
+        }
+      ]
+    ]
+  }
+]
