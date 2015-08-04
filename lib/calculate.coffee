@@ -31,18 +31,22 @@ module.exports = Calculate =
   # Get text from all selections
   getSelectedText: ->
     if @editor = atom.workspace.getActiveTextEditor()
-      selection.getText() for selection in @editor.getSelections()
+      s.getText() for s in @editor.getSelections() when !s.isEmpty()
     else
-      false
+      null
 
   sum: ->
-    if selections = @getSelectedText()
+    selections = @getSelectedText()
+    if selections? and selections.length
       sum = 0
       for selection in selections
         lines = selection?.split('\n') || 0
         for line in lines
           if figure = parseFloat line
             sum += figure
-      atom.clipboard.write sum.toString()
+      atom.clipboard.write 'Sum: ' + sum
+      console.log 'Sum: ' + sum
     else
-      console.log 'No text selected'
+      message = "Couldn't find any selections"
+      console.log message
+      atom.clipboard.write message
