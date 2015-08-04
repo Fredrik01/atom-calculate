@@ -2,7 +2,7 @@
   "name": "calculate",
   "main": "./lib/calculate",
   "version": "0.1.0",
-  "description": "Summarize selected rows",
+  "description": "Summarizes selected rows",
   "keywords": [
     "calculate",
     "sum",
