@@ -1,3 +1,3 @@
 # Atom calculate package
 
-Summarize all selected rows and prints out the result at the bottom.
+Summarizes all selected rows and prints out the result below the selection.
