@@ -1,3 +1,3 @@
 # Atom calculate package
 
-Summarizes all selected rows and writes the result to clipboard. Handles multiple selections.
+Summarizes all selected figures or selected rows and writes the result to the clipboard.

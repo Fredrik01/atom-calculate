@@ -2,7 +2,7 @@
   "name": "calculate",
   "main": "./lib/calculate",
   "version": "0.1.0",
-  "description": "Summarizes selected rows",
+  "description": "Summarizes all selected figures or selected rows and writes the result to the clipboard.",
   "keywords": [
     "calculate",
     "sum",
