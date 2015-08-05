@@ -3,25 +3,14 @@ CalculateView = require './calculate-view'
 
 module.exports = Calculate =
   calculateView: null
-  modalPanel: null
   subscriptions: null
 
   activate: (state) ->
-    @calculateView = new CalculateView(state.calculateViewState)
-    @modalPanel = atom.workspace.addModalPanel(
-      item: @calculateView.getElement(), visible: false
-    )
-
-    # Events subscribed to in atom's system can be easily cleaned up with a
-    CompositeDisposable
     @subscriptions = new CompositeDisposable
-
-    # Register command that toggles this view
     @subscriptions.add atom.commands.add 'atom-workspace', 'calculate:sum':
       => @sum()
 
   deactivate: ->
-    @modalPanel.destroy()
     @subscriptions.dispose()
     @calculateView.destroy()
 
@@ -35,18 +24,31 @@ module.exports = Calculate =
     else
       null
 
-  sum: ->
+  # Get text from selections or from the current document
+  getText: ->
     selections = @getSelectedText()
+    if selections != null and selections.length == 0 and @editor
+      return [@editor.getText()]
+    selections
+
+  sum: ->
+    selections = @getText()
     if selections? and selections.length
       sum = 0
+      allOk = true
       for selection in selections
         lines = selection?.split('\n') || 0
         for line in lines
-          if figure = parseFloat line
-            sum += figure
-      atom.clipboard.write 'Sum: ' + sum
-      console.log 'Sum: ' + sum
+          # Trim whitespace
+          line = line.replace /^\s+|\s+$/g, ""
+          if line.length
+            figure = parseFloat line
+            if !isNaN(figure)
+              sum += figure
+            else
+              allOk = false
+      atom.notifications.addSuccess 'Sum: ' + sum
+      if not allOk
+        atom.notifications.addWarning "Couldn't process all rows"
     else
-      message = "Couldn't find any selections"
-      console.log message
-      atom.clipboard.write message
+      atom.notifications.addInfo "Couldn't find anything"
