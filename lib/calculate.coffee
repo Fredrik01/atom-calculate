@@ -17,6 +17,21 @@ module.exports = Calculate =
   serialize: ->
     calculateViewState: @calculateView.serialize()
 
+  # Remove left and right whitespace
+  trim: (str) ->
+    str.replace /^\s+|\s+$/g, ""
+
+  # Check if the string contains any whitespace chars
+  hasWhitespace: (str) ->
+    str.indexOf(' ') >= 0
+
+  isNumeric: (n) ->
+    !isNaN(parseFloat(n)) && isFinite(n)
+
+  prepareNumber: (n) ->
+    n = n.replace(/,/,".")
+    @trim n
+
   # Get text from all selections
   getSelectedText: ->
     if @editor = atom.workspace.getActiveTextEditor()
@@ -35,20 +50,20 @@ module.exports = Calculate =
     selections = @getText()
     if selections? and selections.length
       sum = 0
-      allOk = true
+      parseErrors = 0
       for selection in selections
         lines = selection?.split('\n') || 0
         for line in lines
-          # Trim whitespace
-          line = line.replace /^\s+|\s+$/g, ""
+          line = @prepareNumber line
           if line.length
-            figure = parseFloat line
-            if !isNaN(figure)
-              sum += figure
+            if @isNumeric line
+              sum += parseFloat line
             else
-              allOk = false
+              parseErrors++
       atom.notifications.addSuccess 'Sum: ' + sum
-      if not allOk
-        atom.notifications.addWarning "Couldn't process all rows"
+      if parseErrors > 0
+        rowStr = if parseErrors == 1 then 'line' else 'lines'
+        message = "Couldn't process " + parseErrors + ' ' + rowStr
+        atom.notifications.addWarning(message)
     else
       atom.notifications.addInfo "Couldn't find anything"
