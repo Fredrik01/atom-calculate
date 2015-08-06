@@ -2,6 +2,13 @@ CalculateView = require './calculate-view'
 {CompositeDisposable} = require 'atom'
 
 module.exports = Calculate =
+
+  config:
+    fixedNumberOfDecimals:
+      type: 'string'
+      default: ''
+      description: 'Leave empty if you dont want this feature.'
+
   calculateView: null
   subscriptions: null
 
@@ -46,6 +53,10 @@ module.exports = Calculate =
       return [@editor.getText()]
     selections
 
+  round: (figure) ->
+    decimals = atom.config.get('calculate.fixedNumberOfDecimals')
+    if parseInt decimals then figure.toFixed decimals else figure
+
   sum: ->
     selections = @getText()
     if selections? and selections.length
@@ -60,6 +71,7 @@ module.exports = Calculate =
               sum += parseFloat line
             else
               parseErrors++
+      sum = @round sum
       atom.notifications.addSuccess 'Sum: ' + sum
       if parseErrors > 0
         rowStr = if parseErrors == 1 then 'line' else 'lines'
