@@ -1,7 +1,7 @@
 {
   "name": "calculate",
   "main": "./lib/calculate",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Summarizes either all selected figures or all figures in the document and displays the result in a notification.",
   "keywords": [
     "calculate",
